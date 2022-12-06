@@ -8,7 +8,7 @@ package ru.eltex.testlist;
 /**
  * The type Developer.
  */
-public class Developer extends User {
+public class Developer extends User implements CSV{
 
     /**
      * Instantiates a new Developer.
@@ -20,4 +20,23 @@ public class Developer extends User {
         super(name, phone);
     }
 
+    @Override
+    public String toString() {
+        return "Dev: " + this.getName() + " " + this.getPhone();
+    }
+
+    @Override
+    public String toJSONString() {
+        return "{\"name:\": " + this.getName() + ", \"phone\":" + this.getPhone() + "}";
+    }
+
+    @Override
+    public String toCSV() {
+        return null;
+    }
+
+    @Override
+    public void fromCSV(String str) {
+
+    }
 }

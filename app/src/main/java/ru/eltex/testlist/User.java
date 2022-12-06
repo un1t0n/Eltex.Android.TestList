@@ -9,7 +9,7 @@ package ru.eltex.testlist;
 /**
  * The type User.
  */
-public class User {
+public abstract class User{
     private String name;
     private String phone;
 
@@ -59,4 +59,9 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @Override
+    public abstract String toString();
+
+    public abstract String toJSONString();
 }

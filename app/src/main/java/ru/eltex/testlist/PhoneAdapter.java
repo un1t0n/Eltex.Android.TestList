@@ -7,6 +7,7 @@
 package ru.eltex.testlist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The class phone adapter.
  */
 public class PhoneAdapter extends ArrayAdapter<User> {
 
     private Context context;
-    private Object[] users;
+    private List<User> users;
     /**
      * The string of log tag.
      */
@@ -37,7 +41,7 @@ public class PhoneAdapter extends ArrayAdapter<User> {
      * @param context the context
      * @param users   the users
      */
-    public PhoneAdapter(Context context, User[] users) {
+    public PhoneAdapter(Context context, List<User> users) {
         super(context, R.layout.item, users);
         this.context = context;
         this.users = users;
@@ -59,13 +63,13 @@ public class PhoneAdapter extends ArrayAdapter<User> {
         View view = inflater.inflate(R.layout.item, parent, false);
 
         TextView name = (TextView) view.findViewById(R.id.name);
-        name.setText(((User)this.users[position]).getName());
+        name.setText(this.users.get(position).getName());
 
         TextView phone = (TextView) view.findViewById(R.id.phone);
-        phone.setText(((User)this.users[position]).getPhone());
+        phone.setText(this.users.get(position).getPhone());
 
         ImageView imageView = (ImageView) view.findViewById(R.id.avatar);
-        if (this.users[position] instanceof Developer){ //Можно через GetClass, но через методы
+        if (this.users.get(position) instanceof Developer){ //Можно через GetClass, но через методы
             imageView.setImageResource(R.drawable.img);
             Log.d(LOG_TAG + "_IMAGE1", "Drawable image developer");
         } else {
@@ -77,8 +81,16 @@ public class PhoneAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View view) {
                 Log.d(LOG_TAG + "_ON_CLICK", "itemClick: position = " + position);
+                Intent toInfo = null;
+                if (users.get(position) instanceof Developer)
+                    toInfo = new Intent(context, DevActivity.class);
+                if (users.get(position) instanceof Manager)
+                    toInfo = new Intent(context, ManagerActivity.class);
+                toInfo.putExtra("name", users.get(position).getName());
+                toInfo.putExtra("phone", users.get(position).getPhone());
+                context.startActivity(toInfo);
                 //Показ имени
-                Toast.makeText(context, ((User)users[position]).getName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, users[position].getName(), Toast.LENGTH_SHORT).show();
             }
         });
         return view;

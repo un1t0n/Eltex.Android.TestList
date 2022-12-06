@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Добавить пользователя"
+        android:id="@+id/addButton"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
