@@ -8,6 +8,8 @@ package ru.eltex.testlist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,9 +67,29 @@ public class PhoneAdapter extends ArrayAdapter<User> {
         TextView name = (TextView) view.findViewById(R.id.name);
         name.setText(this.users.get(position).getName());
 
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, "Test name", Toast.LENGTH_SHORT).show();
+                Intent newContact = new Intent(Intent.ACTION_INSERT);
+                newContact.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                newContact.putExtra(ContactsContract.Intents.Insert.NAME, users.get(position).getName());
+                newContact.putExtra(ContactsContract.Intents.Insert.PHONE, users.get(position).getPhone());
+                context.startActivity(newContact);
+            }
+        });
+
         TextView phone = (TextView) view.findViewById(R.id.phone);
         phone.setText(this.users.get(position).getPhone());
 
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent call = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + users.get(position).getPhone()));
+                context.startActivity(call);
+
+            }
+        });
         ImageView imageView = (ImageView) view.findViewById(R.id.avatar);
         if (this.users.get(position) instanceof Developer){ //Можно через GetClass, но через методы
             imageView.setImageResource(R.drawable.img);
